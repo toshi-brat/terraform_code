@@ -20,13 +20,16 @@ resource "aws_subnet" "pub-snet" {
   map_public_ip_on_launch = true
 
   tags = {
-    #Name = "${var.app_name}-${terraform.workspace}-pub-snet${count.index+1}-${data.aws_availability_zones.available.names[count.index]}"
-    #env = var.env  ? "abc" : "${terraform.workspace}"
-  }
+  #   Name = 
+  #   "env" = 
+  #   "terraform_managed" =
+  #   "Owner" = 
+  # }
+}
 }
 
 resource "aws_subnet" "pri-snet" {
-  vpc_id     = aws_vpc.vpc.id
+  vpc_id                = aws_vpc.vpc.id
   for_each              = var.pri-snet-details
   cidr_block            = each.value["cidr_block"]
   availability_zone     = each.value["availability_zone"]
@@ -50,7 +53,7 @@ resource "aws_route_table" "pub-rt" {
   vpc_id = aws_vpc.vpc.id
 
   route {
-    cidr_block = "10.0.0.0/0"
+    cidr_block = "0.0.0.0/0"
     gateway_id = aws_internet_gateway.igw.id
   }
 
@@ -66,7 +69,25 @@ resource "aws_route_table_association" "rt-association" {
   route_table_id = aws_route_table.pub-rt.id
 }
 
-resource "aws_nat_gateway" "pri-nat" {
-  connectivity_type = "private"
-  subnet_id         = aws_subnet.example.id
+resource "aws_eip" "eip" {
+  count = var.is_nat_required ? 1 : 0
+   tags = {
+    Name = "gw NAT"
+  }
+}
+
+resource "aws_nat_gateway" "nat-gt" {
+  
+  #for_each = var.is_nat_required ? lookup(aws_subnet.pub-snet,var.nat-pub-id,null): null
+  count = var.is_nat_required ? 1 : 0
+  allocation_id = aws_eip.eip.id
+  #subnet_id = lookup(aws_subnet.pub-snet, var.nat-pub-id , null)
+  subnet_id = lookup(aws_subnet.pub-snet,var.nat-pub-id,null).id
+    tags = {
+    Name = "gw NAT"
+  }
+
+  # To ensure proper ordering, it is recommended to add an explicit dependency
+  # on the Internet Gateway for the VPC.
+  # depends_on = [aws_internet_gateway.example]
 }

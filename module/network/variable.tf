@@ -16,7 +16,9 @@ variable "pri-snet-details" {
 }
 
 variable "is_nat_required" {
-  default = false
+  
 }
 
-#count = var.is_nat_required ? 1 : 0
+variable "nat-pub-id" {
+
+}
