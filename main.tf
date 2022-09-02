@@ -60,17 +60,24 @@ module "sg" {
          }
        ]      
     }
+  }
+}
+
+  module "sg2" {
+  source   = "./module/sg"
+  sg_details = {
     "rds-db" = {
       description = "rsd inbound"
       name = "rds-db"
       vpc_id = module.network.vpc-id
       ingress_rules = [ 
         {
-        cidr_blocks = ["10.0.0.0/20"]
+        cidr_blocks = [module.nw.vpc_id]
         from_port = 3306
         protocol = "tcp"
         self = false
         to_port = 3306
+        security_groups = lookup(module.sg.ouput-sg-id, "web-server", null)
         }
        ]      
     }
