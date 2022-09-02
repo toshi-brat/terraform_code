@@ -12,3 +12,13 @@ variable "az" {
   
 }
 
+# variable "sgrds" {
+  
+# }
+
+variable "sgn" {
+  
+}
+variable "sgn2" {
+  
+}

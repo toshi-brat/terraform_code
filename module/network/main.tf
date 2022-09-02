@@ -69,25 +69,25 @@ resource "aws_route_table_association" "rt-association" {
   route_table_id = aws_route_table.pub-rt.id
 }
 
-resource "aws_eip" "eip" {
-  count = var.is_nat_required ? 1 : 0
-   tags = {
-    Name = "gw NAT"
-  }
-}
+# resource "aws_eip" "eip" {
+#   count = var.is_nat_required ? 1 : 0
+#    tags = {
+#     Name = "gw NAT"
+#   }
+# }
 
-resource "aws_nat_gateway" "nat-gt" {
+# resource "aws_nat_gateway" "nat-gt" {
   
-  #for_each = var.is_nat_required ? lookup(aws_subnet.pub-snet,var.nat-pub-id,null): null
-  count = var.is_nat_required ? 1 : 0
-  allocation_id = aws_eip.eip.id
-  #subnet_id = lookup(aws_subnet.pub-snet, var.nat-pub-id , null)
-  subnet_id = lookup(aws_subnet.pub-snet,var.nat-pub-id,null).id
-    tags = {
-    Name = "gw NAT"
-  }
+#   #for_each = var.is_nat_required ? lookup(aws_subnet.pub-snet,var.nat-pub-id,null): null
+#   count = var.is_nat_required ? 1 : 0
+#   allocation_id = aws_eip.eip.id
+#   #subnet_id = lookup(aws_subnet.pub-snet, var.nat-pub-id , null)
+#   subnet_id = lookup(aws_subnet.pub-snet,var.nat-pub-id,null).id
+#     tags = {
+#     Name = "gw NAT"
+#   }
 
-  # To ensure proper ordering, it is recommended to add an explicit dependency
-  # on the Internet Gateway for the VPC.
-  # depends_on = [aws_internet_gateway.example]
-}
+#   # To ensure proper ordering, it is recommended to add an explicit dependency
+#   # on the Internet Gateway for the VPC.
+#   # depends_on = [aws_internet_gateway.example]
+# }

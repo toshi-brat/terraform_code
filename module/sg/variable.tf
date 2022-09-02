@@ -10,6 +10,7 @@ variable "sg_details" {
             protocol = string
             cidr_blocks = list(string)
             self = bool
+            security_groups = list(string)
         }))
     }))
 

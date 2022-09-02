@@ -14,7 +14,7 @@ resource "aws_security_group" "vpc-sg" {
     cidr_blocks      = lookup(ingress.value, "cidr_blocks", null)
     #ipv6_cidr_blocks = [aws_vpc.main.ipv6_cidr_block]
     self             = lookup(ingress.value, "self", null)
-    #security_groups_id = lookup(ingress.value, "security_groups_id", null)
+    #security_groups = lookup(ingress.value, "security_groups", null)
 
   }
   }
