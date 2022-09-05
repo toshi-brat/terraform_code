@@ -48,7 +48,7 @@ module "sg" {
         cidr_blocks = ["0.0.0.0/0"]
         from_port = 80
         protocol = "tcp"
-        self = false
+        self = null
         to_port = 80
         security_groups = null
          },
@@ -56,7 +56,7 @@ module "sg" {
         cidr_blocks = ["0.0.0.0/0"]
         from_port = 22
         protocol = "tcp"
-        self = false
+        self = null
         to_port = 22
         security_groups = null
          }
@@ -77,7 +77,7 @@ module "sg" {
         cidr_blocks = ["10.0.0.0/20"]
         from_port = 3306
         protocol = "tcp"
-        self = false
+        self = null
         to_port = 3306
         security_groups = [lookup(module.sg.ouput-sg-id, "web-server", null)]
         }
@@ -86,16 +86,19 @@ module "sg" {
   }
 }
 
-# module "ec2" {
-#   source = "./module/ec2"
-#   sg = lookup(module.sg.ouput-sg-id, "web-server", null)
-#   ami = "ami-068257025f72f470d"
-#   pub-snet = lookup(module.network.pub-snet-id, "s1", null).id
-#   sgn = lookup(module.network.pub-snet-id, "s1", null).id
-#   sgn2 = lookup(module.network.pub-snet-id, "s2", null).id
-#   az = "ap-south-1a"
-#   #sgrds = lookup(module.sg.ouput-sg-id, "rds-db", null)
-# }
+module "ec2" {
+  source = "./module/ec2"
+  sg = lookup(module.sg.ouput-sg-id, "web-server", null)
+  ami = "ami-068257025f72f470d"
+  pub-snet = lookup(module.network.pub-snet-id, "s1", null).id
+  sgn = lookup(module.network.pub-snet-id, "s1", null).id
+  sgn2 = lookup(module.network.pub-snet-id, "s2", null).id
+  az = "ap-south-1a"
+  #sgrds = lookup(module.sg2.ouput-sg-id, "rds-db", null)
+  username = "admin"
+  password = "Password123"
+  dbname = "myname"
+}
 
 # output "db-port" {
 #   value = module.ec2.db-dns
