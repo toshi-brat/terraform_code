@@ -57,7 +57,7 @@ data "template_file" "wpconfig" {
   template = file("files/wp-config.php")
 
   vars = {
-    db_port = aws_db_instance.database-1.port
+    #db_port = aws_db_instance.database-1.port
     db_host = aws_db_instance.database-1.address
     db_user = var.username
     db_pass = var.password
@@ -80,14 +80,11 @@ data "template_file" "nginx" {
   sudo apt install mysql-server -y
   systemctl start nginx.service
   systemctl start php8.1-fpm.service
-  sudo wget https://wordpress.org/wordpress-5.1.1.tar.gz
-  sudo tar -xzf wordpress-5.1.1.tar.gz
-  sudo cp -r wordpress/* /var/www/html/
+  cd /var/www/html
+  sudo wget https://wordpress.org/latest.tar.gz
+  sudo tar -xvzf latest.tar.gz
   sudo chown -R www-data:www-data /var/www/html/
   sudo chmod -R 755 /var/www/html/
-  sudo unzip latest.zip
-  sudo cp /var/www/html/wp-config-sample.php /var/www/html/wp-config.php
-  sudo apt install awscli -y
   sudo systemctl restart nginx.service
   EOF
   
@@ -113,7 +110,7 @@ data "template_file" "nginx" {
   }
   provisioner "remote-exec" {
       inline = [
-      "sleep 120 && sudo cp /tmp/wp-config.php /var/www/html/wp-config.php",
+      "sleep 200 && sudo cp /tmp/wp-config.php /var/www/html/wordpress/wp-config.php",
     ]
 
     connection {
@@ -160,7 +157,7 @@ resource "aws_db_instance" "database-1" {
   skip_final_snapshot  = true
   availability_zone    = var.az
   db_subnet_group_name = aws_db_subnet_group.sgn.name
-  #vpc_security_group_ids = [var.sgrds]
+  vpc_security_group_ids = [var.sgrds]
   
   }
 

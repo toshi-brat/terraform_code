@@ -60,6 +60,7 @@ module "sg" {
         to_port = 22
         security_groups = null
          }
+         
        ]      
     }
   }
@@ -74,7 +75,7 @@ module "sg" {
       vpc_id = module.network.vpc-id
       ingress_rules = [ 
         {
-        cidr_blocks = ["10.0.0.0/20"]
+        cidr_blocks = ["0.0.0.0/0"]
         from_port = 3306
         protocol = "tcp"
         self = null
@@ -88,13 +89,15 @@ module "sg" {
 
 module "ec2" {
   source = "./module/ec2"
-  sg = lookup(module.sg.ouput-sg-id, "web-server", null)
+  
   ami = "ami-068257025f72f470d"
   pub-snet = lookup(module.network.pub-snet-id, "s1", null).id
+  sg = lookup(module.sg.ouput-sg-id, "web-server", null)
+
   sgn = lookup(module.network.pub-snet-id, "s1", null).id
   sgn2 = lookup(module.network.pub-snet-id, "s2", null).id
   az = "ap-south-1a"
-  #sgrds = lookup(module.sg2.ouput-sg-id, "rds-db", null)
+  sgrds = lookup(module.sg2.ouput-sg-id, "rds-db", null)
   username = "admin"
   password = "Password123"
   dbname = "myname"
