@@ -53,25 +53,28 @@
 #   public_key = file(var.ssh_key)
 # }
 
-data "template_file" "wpconfig" {
-  template = file("files/wp-config.php")
+# data "template_file" "wpconfig" {
+#   template = file("files/wp-config.php")
 
-  vars = {
-    #db_port = aws_db_instance.database-1.port
-    db_host = aws_db_instance.database-1.address
-    db_user = var.username
-    db_pass = var.password
-    db_name = var.dbname
-  }
-}
-data "template_file" "nginx" {
-  template = file("files/default")
-}
+#   vars = {
+#     #db_port = aws_db_instance.database-1.port
+#     db_host = aws_db_instance.database-1.address
+#     db_user = var.username
+#     db_pass = var.password
+#     db_name = var.dbname
+#   }
+# }
+# data "template_file" "nginx" {
+#   template = file("files/default")
+# }
 
   resource "aws_instance" "web" {
+  for_each = var.pub-id
+  subnet_id = each.value["subnet_id"]
   ami           = var.ami
-  subnet_id = var.pub-snet
   instance_type = "t2.micro"
+  security_groups = [var.sg]
+  key_name = "key-pair"
   user_data = <<-EOF
   #!/bin/bash
   sudo apt update -y
@@ -88,85 +91,82 @@ data "template_file" "nginx" {
   sudo systemctl restart nginx.service
   EOF
   
-  security_groups = [var.sg]
-    key_name = "key-pair"
-    #iam_instance_profile = aws_iam_instance_profile.S3_Profile.name
-    
+  #iam_instance_profile = aws_iam_instance_profile.S3_Profile.name
   #depends_on = [aws_db_instance.database-1]
   tags = {
     Name = "web-server"
   }
 
- provisioner "file" {
-    content     = data.template_file.wpconfig.rendered
-    destination = "/tmp/wp-config.php"
+#  provisioner "file" {
+#     content     = data.template_file.wpconfig.rendered
+#     destination = "/tmp/wp-config.php"
 
-    connection {
-      type        = "ssh"
-      user        = "ubuntu"
-      host        = self.public_ip
-      private_key = file(var.ssh_priv_key)
-    }
-  }
-  provisioner "remote-exec" {
-      inline = [
-      "sleep 200 && sudo cp /tmp/wp-config.php /var/www/html/wordpress/wp-config.php",
-    ]
+#     connection {
+#       type        = "ssh"
+#       user        = "ubuntu"
+#       host        = self.public_ip
+#       private_key = file(var.ssh_priv_key)
+#     }
+#   }
+#   provisioner "remote-exec" {
+#       inline = [
+#       "sleep 200 && sudo cp /tmp/wp-config.php /var/www/html/wordpress/wp-config.php",
+#     ]
 
-    connection {
-      type        = "ssh"
-      user        = "ubuntu"
-      host        = self.public_ip
-      private_key = file(var.ssh_priv_key)
-    }
-  }
-  provisioner "file" {
-    content     = data.template_file.nginx.rendered
-    destination = "/tmp/default"
+#     connection {
+#       type        = "ssh"
+#       user        = "ubuntu"
+#       host        = self.public_ip
+#       private_key = file(var.ssh_priv_key)
+#     }
+#   }
+#   provisioner "file" {
+#     content     = data.template_file.nginx.rendered
+#     destination = "/tmp/default"
 
-    connection {
-      type        = "ssh"
-      user        = "ubuntu"
-      host = self.public_ip
-      private_key = file(var.ssh_priv_key)
-    }
-  }
-  provisioner "remote-exec" {
-      inline = [
-      "sudo cp /tmp/default /etc/nginx/sites-enabled/default",
-    ]
+#     connection {
+#       type        = "ssh"
+#       user        = "ubuntu"
+#       host = self.public_ip
+#       private_key = file(var.ssh_priv_key)
+#     }
+#   }
+#   provisioner "remote-exec" {
+#       inline = [
+#       "sudo cp /tmp/default /etc/nginx/sites-enabled/default",
+#     ]
 
-    connection {
-      type        = "ssh"
-      user        = "ubuntu"
-      host = self.public_ip
-      private_key = file(var.ssh_priv_key)
-    }
-  }
+#     connection {
+#       type        = "ssh"
+#       user        = "ubuntu"
+#       host = self.public_ip
+#       private_key = file(var.ssh_priv_key)
+#     }
+#   }
   }
 
-resource "aws_db_instance" "database-1" {
-  allocated_storage    = 20
-  engine               = "mysql"
-  engine_version       = "8.0"
-  instance_class       = "db.t3.micro"
-  db_name              = var.dbname
-  username             = var.username
-  password             = var.password
-  #parameter_group_name = "default.mysql5.7"
-  skip_final_snapshot  = true
-  availability_zone    = var.az
-  db_subnet_group_name = aws_db_subnet_group.sgn.name
-  vpc_security_group_ids = [var.sgrds]
+# resource "aws_db_instance" "database-1" {
+#   allocated_storage    = 20
+#   engine               = "mysql"
+#   engine_version       = "8.0"
+#   instance_class       = "db.t3.micro"
+#   db_name              = var.dbname
+#   username             = var.username
+#   password             = var.password
+#   #parameter_group_name = "default.mysql5.7"
+#   skip_final_snapshot  = true
+#   availability_zone    = var.az
+#   db_subnet_group_name = aws_db_subnet_group.sgn.name
+#   vpc_security_group_ids = [var.sgrds]
   
-  }
+#   }
 
-  resource "aws_db_subnet_group" "sgn" {
-  name       = "sgn"
-  subnet_ids = [var.sgn, var.sgn2]
+#   resource "aws_db_subnet_group" "sgn" {
+#   name       = "sgn"
+#   subnet_ids = [var.sgn, var.sgn2]
 
-  tags = {
-    Name = "My DB subnet group"
-  }
-}
+#   tags = {
+#     Name = "My DB subnet group"
+#   }
+# }
   

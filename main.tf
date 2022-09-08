@@ -62,11 +62,25 @@ module "sg" {
          }
          
        ]      
-    }
+    },
+    "alb-sg" = {
+      description = "httpd inbound"
+      name = "lb-sg"
+      vpc_id = module.network.vpc-id
+      ingress_rules = [ 
+        {
+        cidr_blocks = ["0.0.0.0/0"]
+        from_port = 80
+        protocol = "tcp"
+        self = null
+        to_port = 80
+        security_groups = null
+         }]}
   }
 }
 
-  module "sg2" {
+
+ module "sg2" {
   source   = "./module/sg"
   sg_details = {
     "rds-db" = {
@@ -80,7 +94,7 @@ module "sg" {
         protocol = "tcp"
         self = null
         to_port = 3306
-        security_groups = [lookup(module.sg.ouput-sg-id, "web-server", null)]
+        security_groups = [lookup(module.sg.output-sg-id, "web-server", null)]
         }
        ]      
     }
@@ -91,21 +105,44 @@ module "ec2" {
   source = "./module/ec2"
   
   ami = "ami-068257025f72f470d"
-  pub-snet = lookup(module.network.pub-snet-id, "s1", null).id
-  sg = lookup(module.sg.ouput-sg-id, "web-server", null)
+  #pub-snet = lookup(module.network.pub-snet-id, "s1", null).id
+  sg = lookup(module.sg.output-sg-id, "web-server", null)
+  pub-id = {
+    ec2-01= {
+      subnet_id = lookup(module.network.pub-snet-id, "s1", null).id
+      },
+  
+  ec2-02 = {
+    subnet_id = lookup(module.network.pub-snet-id, "s2", null).id
+    }
+    
+  }
 
-  sgn = lookup(module.network.pub-snet-id, "s1", null).id
-  sgn2 = lookup(module.network.pub-snet-id, "s2", null).id
-  az = "ap-south-1a"
-  sgrds = lookup(module.sg2.ouput-sg-id, "rds-db", null)
-  username = "admin"
-  password = "Password123"
-  dbname = "myname"
-}
+  #sgn = lookup(module.network.pub-snet-id, "s1", null).id
+  #sgn2 = lookup(module.network.pub-snet-id, "s2", null).id
+  #az = "ap-south-1a"
+  #sgrds = lookup(module.sg2.ouput-sg-id, "rds-db", null)
+#   username = "admin"
+#   password = "Password123"
+#   dbname = "myname"
+ }
+  module "lb"{
+    source = "./module/lb"
+    lb_sg = lookup(module.sg.output-sg-id, "alb-sg", null)
+    snet = {
+      snet1 ={
+        snet-id = lookup(module.network.pub-snet-id, "s1", null).id
+      },
+      snet2 ={
+        snet-id = lookup(module.network.pub-snet-id, "s2", null).id
+      }
+    }
+    # pubsnet = [lookup(module.network.pub-snet-id, "s1", null).id , lookup(module.network.pub-snet-id, "s2", null).id]
+    vpc-id =  module.network.vpc-id
+    attach = module.ec2.ec2-id
+  }
 
-# output "db-port" {
-#   value = module.ec2.db-dns
-#}
-# output "db-host" {
-#   value = module.ec2.db-host
-# }
+  output "id" {
+    value = module.ec2.ec2-id
+  }
+  

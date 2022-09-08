@@ -5,34 +5,41 @@ variable "sg" {
 variable "ami" {
   
 }
-variable "pub-snet" {
-  
-}
-variable "az" {
-  
-}
-
-variable "sgrds" {
-  
+variable "pub-id" {
+    type = map(object({
+subnet_id = string
+    })  )
 }
 
-variable "sgn" {
+# variable "pub-snet" {
   
-}
-variable "sgn2" {
+# }
+# variable "az" {
   
-}
- variable "username" {
+# }
+
+# variable "sgrds" {
+  
+# }
+
+# variable "sgn" {
+  
+# }
+# variable "sgn2" {
+  
+# }
+#  variable "username" {
     
    
- }
- variable "password" {
+#  }
+#  variable "password" {
    
- }
- variable "dbname" {
+#  }
+#  variable "dbname" {
    
- }
+#  }
 
-variable ssh_priv_key {
-  default     = "/home/toshi/Downloads/key-pair.pem"
- }
+# variable ssh_priv_key {
+#   default     = "/home/toshi/Downloads/key-pair.pem"
+#  }
+
