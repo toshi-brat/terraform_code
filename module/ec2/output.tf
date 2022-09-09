@@ -6,3 +6,4 @@ output "ec2-id" {
     value = {for k,v in aws_instance.web: k=>v.id}
   
 }
+

@@ -8,6 +8,8 @@ variable "snet" {
   type = map
 }
 
-variable "attach" {  
-  type = map
-}
+# variable "attach" {  
+#   type = map
+# }
+
+variable "pri-snet" {}
