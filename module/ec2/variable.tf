@@ -39,7 +39,4 @@ subnet_id = string
    
 #  }
 
-# variable ssh_priv_key {
-#   default     = "/home/toshi/Downloads/key-pair.pem"
-#  }
 

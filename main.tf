@@ -4,6 +4,7 @@ provider "aws" {
 data "aws_availability_zones" "available" {
   state = "available"
 }
+
 module "network" {
   source   = "./module/network"
   cidr     = "10.0.0.0/20"
@@ -104,7 +105,7 @@ module "sg" {
 module "ec2" {
   source = "./module/ec2"
   
-  ami = "ami-068257025f72f470d"
+  ami = "ami-0b43eb83cb7397b6f"
   #pub-snet = lookup(module.network.pub-snet-id, "s1", null).id
   sg = lookup(module.sg.output-sg-id, "web-server", null)
   pub-id = {
@@ -142,7 +143,12 @@ module "ec2" {
     attach = module.ec2.ec2-id
   }
 
-  output "id" {
-    value = module.ec2.ec2-id
-  }
-  
+ 
+module "asg" {
+  source = "./module/asg"
+  ami = "ami-0b43eb83cb7397b6f"
+  instance-type = "t2.micro"
+  snet = [lookup(module.network.pub-snet-id, "s1", null).id , lookup(module.network.pub-snet-id, "s2", null).id]
+  tg-arn = module.lb.tg-arn
+}
+
