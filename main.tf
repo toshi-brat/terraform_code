@@ -37,7 +37,7 @@ module "network" {
   
 
 }
-
+/*
 module "sg" {
   source = "./module/sg"
   sg_details = {
@@ -164,3 +164,4 @@ module "asg" {
 # dbname = "myname"
 # }
 
+*/
