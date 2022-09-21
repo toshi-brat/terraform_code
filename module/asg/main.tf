@@ -7,6 +7,7 @@ resource "aws_launch_configuration" "as_conf" {
     create_before_destroy = true
   }
 }
+
 resource "aws_autoscaling_group" "frontend-web-asg" {
   name                      = "external-asg"
   max_size                  = 3
@@ -22,6 +23,16 @@ resource "aws_autoscaling_group" "frontend-web-asg" {
     create_before_destroy = true
   }
 }
+
+# resource "aws_autoscaling_schedule" "front-end-policy" {
+#   scheduled_action_name  = "high-load"
+#   min_size               = 3
+#   max_size               = 7
+#   desired_capacity       = 5
+#   start_time             = "2022-09-20T09:00:00Z"
+#   end_time               = "2022-09-22T18:00:00Z"
+#   autoscaling_group_name = aws_autoscaling_group.frontend-web-asg.namme
+# }
 
 resource "aws_autoscaling_group" "backend-web-asg" {
   name                      = "internal-asg"
@@ -39,31 +50,50 @@ resource "aws_autoscaling_group" "backend-web-asg" {
   }
 }
 
-#   provisioner "file" {
-#     content     = data.template_file.nginx.rendered
-#     destination = "/tmp/default"
-
-#     connection {
-#       type        = "ssh"
-#       user        = "ubuntu"
-#       host = self.public_ip
-#       private_key = file(var.ssh_priv_key)
-#     }
-#   }
-#   provisioner "remote-exec" {
-#       inline = [
-#       "sudo cp /tmp/default /etc/nginx/sites-enabled/default",
-#     ]
-
-#     connection {
-#       type        = "ssh"
-#       user        = "ubuntu"
-#       host = self.public_ip
-#       private_key = file(var.ssh_priv_key)
-#     }
-#   }
-
+# resource "aws_autoscaling_policy" "backend-policy" {
+#   name                   = "scale-out"
+#   scaling_adjustment     = 4
+#   adjustment_type        = "PredictiveScaling"
+#   cooldown               = 300
+#   autoscaling_group_name = aws_autoscaling_group.backend-web-asg.name
 # }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  #   provisioner "file" {
+  #   content     = data.template_file.nginx.rendered
+  #   destination = "/tmp/default"
+
+  #   connection {
+  #     type        = "ssh"
+  #     user        = "ubuntu"
+  #     host = self.public_ip
+  #     private_key = file(var.ssh_priv_key)
+  #   }
+  # }
+  # provisioner "remote-exec" {
+  #     inline = [
+  #     "sudo cp /tmp/default /etc/nginx/sites-enabled/default",
+  #   ]
+
+  #   connection {
+  #     type        = "ssh"
+  #     user        = "ubuntu"
+  #     host = self.public_ip
+  #     private_key = file(var.ssh_priv_key)
+  #   }
+  # }
 
 # data "template_file" "wpconfig" {
 #   template = file("files/wp-config.php")

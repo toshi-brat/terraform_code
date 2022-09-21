@@ -9,6 +9,8 @@ module "network" {
   source   = "./module/network"
   cidr     = "10.0.0.0/20"
   app_name = "web"
+  is_nat_required = "false"
+  nat-pub-id      = "s1"
 
   pub-snet-details = {
     s1 = {
@@ -32,8 +34,7 @@ module "network" {
       availability_zone = "ap-south-1b"
     }
   }
-  is_nat_required = false
-  nat-pub-id      = "s1"
+  
 
 }
 
@@ -102,21 +103,21 @@ module "sg2" {
   }
 }
 
-module "ec2" {
-  source = "./module/ec2"
+# module "ec2" {
+#   source = "./module/ec2"
 
-  ami = "ami-0b43eb83cb7397b6f"
-  #pub-snet = lookup(module.network.pub-snet-id, "s1", null).id
-  sg = lookup(module.sg.output-sg-id, "web-server", null)
-  pub-id = {
-    ec2-01= {
-      subnet_id = lookup(module.network.pub-snet-id, "s1", null).id
-      }
-  # ec2-02 = {
-  #   subnet_id = lookup(module.network.pub-snet-id, "s2", null).id
-    }
-  }  
- 
+#   ami = "ami-0b43eb83cb7397b6f"
+#   #pub-snet = lookup(module.network.pub-snet-id, "s1", null).id
+#   sg = lookup(module.sg.output-sg-id, "web-server", null)
+#   pub-id = {
+#     ec2-01= {
+#       subnet_id = lookup(module.network.pub-snet-id, "s1", null).id
+#       }
+#   # ec2-02 = {
+#   #   subnet_id = lookup(module.network.pub-snet-id, "s2", null).id
+#     }
+#   }  
+
 
 module "lb" {
   source = "./module/lb"
@@ -149,16 +150,17 @@ module "asg" {
   # username = module.rds.username
   # password = module.rds.password
   # dbname = module.rds.dbname
+  
 }
 
-module "rds" {
-source = "./module/rds"
-sgn = lookup(module.network.pub-snet-id, "s1", null).id
-sgn2 = lookup(module.network.pub-snet-id, "s2", null).id
-az = "ap-south-1a"
-sgrds = lookup(module.sg2.output-sg-id, "rds-db", null)
-username = "admin"
-password = "Password123"
-dbname = "myname"
-}
+# module "rds" {
+# source = "./module/rds"
+# sgn = lookup(module.network.pub-snet-id, "s1", null).id
+# sgn2 = lookup(module.network.pub-snet-id, "s2", null).id
+# az = "ap-south-1a"
+# sgrds = lookup(module.sg2.output-sg-id, "rds-db", null)
+# username = "admin"
+# password = "Password123"
+# dbname = "myname"
+# }
 
