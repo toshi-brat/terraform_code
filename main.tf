@@ -37,7 +37,7 @@ module "network" {
   
 
 }
-
+/*
 module "sg" {
   source = "./module/sg"
   sg_details = {
@@ -81,7 +81,7 @@ module "sg" {
   }
 }
 
-/*
+
 module "sg2" {
   source = "./module/sg"
   sg_details = {
