@@ -28,12 +28,14 @@ jobs:
       - id: first-step
         run: echo "::set-output name=first-step-output ::hello"
       - name: taking output
+      - uses: actions/checkout@v1
         
   job2:
     runs-on: ubuntu-latest
     steps:
       - name: using job1 output
         run: echo${{needs.job1.outputs.my-output}}
+      - uses: actions/checkout@v1
       
 
 
