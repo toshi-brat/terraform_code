@@ -1,0 +1,29 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Output
+
+# Controls when the workflow will run
+on:
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  job1:
+    runs-on: ubuntu-latest
+    
+    outputs:
+       my-output: ${{steps.first-step.output.first-step-output}}
+    steps:
+      - id: first-step
+        run: echo "::set-output name=first-step-output ::hello"
+      - name: taking output
+      
+  job2:
+    runs-on: ubuntu-latest
+    steps:
+      - name: using job1 output
+        run: echo${{needs.job1.outputs.my-output}}
+     
+        
+   
+     
