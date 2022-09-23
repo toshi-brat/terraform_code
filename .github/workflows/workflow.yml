@@ -4,25 +4,37 @@ on:
   push:
     branches: [ "main" ]
   pull_request:
+  workflow_dispatch:
 
 jobs:
-  terraform:
+  job-terraform:
     name: 'Terraform'
     runs-on: ubuntu-latest
     env:
       AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_ID}}
       AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
       GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-
-
-
     steps:
       - uses: actions/checkout@v1
         name: Download codebase
-
       - name: terraform plan
         uses: dflook/terraform-plan@v1
 
+  job1:
+    runs-on: ubuntu-latest
+    outputs:
+       my-output: ${{steps.first-step.output.first-step-output}}
+    steps:
+      - id: first-step
+        run: echo "::set-output name=first-step-output ::hello"
+      - name: taking output
+        
+  job2:
+    runs-on: ubuntu-latest
+    steps:
+      - name: using job1 output
+        run: echo${{needs.job1.outputs.my-output}}
+      
 
 
     # - name: terraform apply
