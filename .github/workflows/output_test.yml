@@ -11,11 +11,11 @@ jobs:
   job1:
     runs-on: ubuntu-latest
     outputs:
-       my-output: ${{steps.first-step.output.first-step-output}}
+       my-output: ${{steps.first-step.outputs.first-step-output}}
     steps:
       - uses: actions/checkout@v1
       - id: first-step
-        run: echo "::set-output name=first-step-output ::hello"
+        run: echo "::set-output name=first-step-output::hello"
         name: taking output
               
   job2:
