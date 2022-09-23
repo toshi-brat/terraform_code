@@ -19,7 +19,7 @@ jobs:
  # Using NEEDS to run job sequentially and using output of job1 in job2             
   job2:
     runs-on: ubuntu-latest
-    
+    needs: job1
     steps:
       - name: using job1 output
         run: echo ${{needs.job1.outputs.output1}}
