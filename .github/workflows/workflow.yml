@@ -21,16 +21,18 @@ jobs:
         name: Download codebase
       - name: terraform plan
         uses: dflook/terraform-plan@v1
+
       - name: configure AWS
         uses: aws-actions/configure-aws-credentials@v1
         with: 
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ap-south-1
+
       - name: update asg 
         run : |
-          aws autoscaling update-auto-scaling-group --auto-scaling-group-name external-asg --launch-configuration-name nginx
-          aws autoscaling update-auto-scaling-group --auto-scaling-group-name external-asg --max-size 6
+          aws autoscaling update-auto-scaling-group --auto-scaling-group-name external-asg --launch-configuration-name nginx-config20220926090834785100000001
+          aws autoscaling update-auto-scaling-group --auto-scaling-group-name external-asg --max-size 3
       
 
 
