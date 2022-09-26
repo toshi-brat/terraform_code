@@ -27,8 +27,11 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ap-south-1
-      - uses: dflook/terraform-apply@v1
-        name: tf-apply
+      - name: update asg 
+        run : |
+          aws autoscaling update-auto-scaling-group --auto-scaling-group-name external-asg --launch-configuration-name nginx
+          aws autoscaling update-auto-scaling-group --auto-scaling-group-name external-asg --max-size 6
+      
 
 
 
