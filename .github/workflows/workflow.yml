@@ -19,8 +19,8 @@ jobs:
         name: Download codebase
       - name: terraform plan
         uses: dflook/terraform-plan@v1
-      - uses: dflook/terraform-apply@v
-        name: tf-apply
+#       - uses: dflook/terraform-apply@v
+#         name: tf-apply
   
 #   job3:
 #     runs-on: ubuntu-latest
