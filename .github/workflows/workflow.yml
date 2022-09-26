@@ -3,15 +3,19 @@ name: terraform execution
 on:
   push:
     branches: [main]
-
+  pull_request:
+  
 jobs:
-  job-terraform:
+  terraform:
     name: 'Terraform'
     runs-on: ubuntu-latest
     env:
       AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_ID}}
       AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
       GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
+
+
     steps:
       - uses: actions/checkout@v1
         name: Download codebase
@@ -23,6 +27,12 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ap-south-1
-      - uses: dflook/terraform-apply@v1
-        name: tf-apply
+      - name: update asg 
+        run : |
+          aws autoscaling update-auto-scaling-group --auto-scaling-group-name external-asg --launch-configuration-name nginx
+          aws autoscaling update-auto-scaling-group --auto-scaling-group-name external-asg --max-size 6
+      
+
+
+
 
