@@ -1,6 +1,9 @@
 name: terraform execution
 
 on:
+  push:
+    branches: [main]
+  pull_request:
   workflow_dispatch:
 
 jobs:
@@ -16,27 +19,12 @@ jobs:
         name: Download codebase
       - name: terraform plan
         uses: dflook/terraform-plan@v1
-  job1:
+  
+  
+  job3:
     runs-on: ubuntu-latest
-    outputs:
-       my-output: ${{steps.first-step.output.first-step-output}}
+    needs: job-terraform
     steps:
-      - uses: actions/checkout@v1
-      - id: first-step
-        run: echo "::set-output name=first-step-output ::hello"
-        name: taking output
-              
-  job2:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v1
-      - name: using job1 output
-        run: echo${{needs.job1.outputs.my-output}}
-        
-      
+      - uses: dflook/terraform-apply@v1
+        name: terraform-apply
 
-
-
-
-    # - name: terraform apply
-    #     uses: dflook/terraform-apply@v1
