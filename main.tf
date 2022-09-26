@@ -81,7 +81,7 @@ module "sg" {
   }
 }
 
-/*
+
 module "sg2" {
   source = "./module/sg"
   sg_details = {
@@ -164,4 +164,3 @@ module "asg" {
 # dbname = "myname"
 # }
 
-*/
