@@ -2,7 +2,8 @@ name: terraform execution
 
 on:
   push:
-    branches: [main]
+    branches: 
+      - main
   pull_request:
   
 jobs:
