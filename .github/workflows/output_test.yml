@@ -9,7 +9,7 @@ jobs:
   job:
     runs-on: ubuntu-latest
     env: 
-      DEPLOYMENT_NOTIFICATION_URL: https://api.github.com/repos/toshi-brat/FosFor/dispatches
+      DEPLOYMENT_NOTIFICATION_URL: https://api.github.com/repos/toshi-brat/terraform_code/dispatches
       GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
     steps:
     
