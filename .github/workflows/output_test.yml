@@ -8,17 +8,15 @@ on:
 jobs:
   job:
     runs-on: ubuntu-latest
-    env: 
-      DEPLOYMENT_NOTIFICATION_URL: https://api.github.com/repos/toshi-brat/terraform_code/dispatches
-      GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-    steps:
-    
+    steps:    
       - name: Repo Dispatch
+        env: 
+          DEPLOYMENT_NOTIFICATION_URL: https://api.github.com/repos/toshi-brat/terraform_code/dispatches
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
         run: |
-          run: |
-            AUTH_HEADER="Authorization: token ${{ secrets.GITHUB_TOKEN }}"
-            PAYLOAD='{ "event_type": "deploy_service"}'
-            curl --request POST "$DEPLOYMENT_NOTIFICATION_URL" --header "$AUTH_HEADER" --header "Content-Type: application/json" --data-raw "$PAYLOAD" -f -i
+          AUTH_HEADER="Authorization: token ${{ secrets.GITHUB_TOKEN }}"
+          PAYLOAD='{ "event_type": "deploy_service"}'
+          curl --request POST "$DEPLOYMENT_NOTIFICATION_URL" --header "$AUTH_HEADER" --header "Content-Type: application/json" --data-raw "$PAYLOAD" -f -i
       
 
 
