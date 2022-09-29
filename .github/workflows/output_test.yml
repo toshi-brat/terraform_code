@@ -4,7 +4,7 @@ name: Output
 # Running Workflow Manually
 on:
   workflow_dispatch:
-    inputs:
+#   inputs:
 #       name:
 #         type: choice
 #         description: Who to greet
@@ -26,9 +26,16 @@ jobs:
           GIT_T: ${{ secrets.GITHUB_TOKEN }}
         run: |
          echo "$GITHUB.REPOSITORY"          
+         cd Downloads
          touch env.txt
          env >> env.txt
-         
+         cd ..
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v2
+        with: 
+          name: env-details
+          path: downloads
          
            
 #       - name: Repo Dispatch
