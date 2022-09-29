@@ -12,13 +12,13 @@ jobs:
            
       - name: Repo Dispatch
         env: 
-          DEPLOYMENT_NOTIFICATION_URL: https://api.github.com/repos/toshi-brat/terraform_code/dispatches
+          DEPLOYMENT_NOTIFICATION_URL: https://api.github.com/repos/toshi-brat/FosFor/dispatches
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
         run: |
           curl \
            -X POST \
            -H "Accept: application/vnd.github+json" \
-           -H "Authorization: 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 " \
+           -H "Authorization: Bearer ${{ secrets.GIT.PAT}} " \
            https://api.github.com/repos/toshi-brat/terraform_code/dispatches \
            -d '{"event_type":"on-demand-test","client_payload":{"unit":false,"integration":true}}'
 
