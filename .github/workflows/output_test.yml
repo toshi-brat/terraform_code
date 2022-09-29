@@ -3,6 +3,7 @@ name: Output
 
 # Running Workflow Manually
 on:
+  push:[main]
   workflow_dispatch:
 #   inputs:
 #       name:
@@ -33,7 +34,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with: 
           name: env-details
-          path: /home/runner
+          path: env.txt
          
            
 #       - name: Repo Dispatch
