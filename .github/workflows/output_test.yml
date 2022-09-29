@@ -4,6 +4,7 @@ name: Output
 # Running Workflow Manually
 on:
   workflow_dispatch:
+  repository_dispatch:
 
 jobs:
 #Taking A Output "Hello" form a step and Storing it in OUTPUTS
