@@ -26,16 +26,15 @@ jobs:
           GIT_T: ${{ secrets.GITHUB_TOKEN }}
         run: |
          echo "$GITHUB.REPOSITORY"          
-         cd downloads
          touch env.txt
          env >> env.txt
-         cd ..
+         
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v2
         with: 
           name: env-details
-          path: downloads
+          path: /home/runner
          
            
 #       - name: Repo Dispatch
