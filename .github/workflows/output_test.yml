@@ -4,15 +4,15 @@ name: Output
 # Running Workflow Manually
 on:
   workflow_dispatch:
-#   inputs:
-#       name:
-#         type: choice
-#         description: Who to greet
-#         options: 
-#         - monalisa
-#         - cschleiden
-#       message:
-#         required: true
+    inputs:
+      name:
+        type: choice
+        description: Who to greet
+        options: 
+        - monalisa
+        - cschleiden
+      message:
+        required: true
 
 jobs:
   job:
@@ -27,6 +27,7 @@ jobs:
         run: |
          touch env.txt
          echo "$GITHUB.REPOSITORY" >> env.txt
+         env >> env.txt
          
 
       - name: Upload Artifacts
