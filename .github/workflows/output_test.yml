@@ -5,12 +5,12 @@ name: Output
 on:
   workflow_dispatch:
     inputs:
-      name:
-        type: choice
-        description: Who to greet
-        options: 
-        - monalisa
-        - cschleiden
+#       name:
+#         type: choice
+#         description: Who to greet
+#         options: 
+#         - monalisa
+#         - cschleiden
       message:
         required: true
 
@@ -19,13 +19,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:    
     
-      - name: Print
+      - name: Print Env
         env:
           GIT_REPO: ${{ github.repository }}
           GIT_REPO_O: ${{ github.repository_owner }}
           GIT_T: ${{ secrets.GITHUB_TOKEN }}
         run: |
-         echo "$GITHUB_CONTEXT"
+         echo "$GITHUB.REPOSITORY"
+         env
          
 
            
