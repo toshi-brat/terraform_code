@@ -4,27 +4,21 @@ name: Output
 # Running Workflow Manually
 on:
   workflow_dispatch:
-  repository_dispatch:
 
 jobs:
-#Taking A Output "Hello" form a step and Storing it in OUTPUTS
-  job1:
+  job:
     runs-on: ubuntu-latest
-    outputs:
-       output1: ${{ steps.first.outputs.output }}
+    env: 
+      DEPLOYMENT_NOTIFICATION_URL: https://api.github.com/repos/toshi-brat/FosFor/dispatches
+      GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
     steps:
-      - id: first
-        run: echo "::set-output name=output::hello"
-        name: taking output
-        
- # Using NEEDS to run job sequentially and using output of job1 in job2             
-  job2:
-    runs-on: ubuntu-latest
-    needs: job1
-    steps:
-      - name: using job1 output
-        run: echo ${{needs.job1.outputs.output1}}
-        
+    
+      - name: Repo Dispatch
+        run: |
+          run: |
+          AUTH_HEADER="Authorization: token ${{ secrets.GITHUB_TOKEN }}"
+          PAYLOAD='{ "event_type": "deploy_service"}'
+          curl --request POST "$DEPLOYMENT_NOTIFICATION_URL" --header "$AUTH_HEADER" --header "Content-Type: application/json" --data-raw "$PAYLOAD" -f -i
       
 
 
