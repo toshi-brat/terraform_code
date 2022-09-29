@@ -9,15 +9,7 @@ jobs:
   job:
     runs-on: ubuntu-latest
     steps:    
-       
-      - name: "Generating Token"
-        id: get_workflow_token
-        uses: tibdex/github-app-token@v1
-#         with:
-#           app_id: ${{ secrets.APP_ID }}
-#           private_key: ${{ secrets.PRIVATE_KEY }}
-    
-    
+           
       - name: Repo Dispatch
         env: 
           DEPLOYMENT_NOTIFICATION_URL: https://api.github.com/repos/toshi-brat/terraform_code/dispatches
@@ -26,7 +18,7 @@ jobs:
           curl \
            -X POST \
            -H "Accept: application/vnd.github+json" \
-           -H "Authorization: Bearer ${{ steps.generate_token.outputs.token }} " \
+           -H "Authorization: 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 " \
            https://api.github.com/repos/toshi-brat/terraform_code/dispatches \
            -d '{"event_type":"on-demand-test","client_payload":{"unit":false,"integration":true}}'
 
