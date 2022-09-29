@@ -28,15 +28,21 @@ jobs:
         run: |
          echo $GIT_NAME
          touch env.txt
-         env
          env >> env.txt
          
-
+      - name: updated env
+        env: 
+          GIT_NAME: toshi
+        run : echo $GIT_NAME
+         
+      
 #       - name: Upload Artifacts
+       
 #         uses: actions/upload-artifact@v2
 #         with: 
 #           name: env-details
 #           path: env.txt
+        
          
            
 #       - name: Repo Dispatch
