@@ -30,11 +30,11 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ap-south-1
 
-      - name: add tag
-        uses: rickstaa/action-create-tag@v1
-        with: 
-            tag: "latest"
-            message: "latest Release"
+#       - name: add tag
+#         uses: rickstaa/action-create-tag@v1
+#         with: 
+#             tag: "latest"
+#             message: "latest Release"
 
 
       # - name: update asg 
