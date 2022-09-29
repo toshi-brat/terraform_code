@@ -2,8 +2,8 @@ name: terraform execution
 
 on:
  pull_request:
- repository_dispatch:
-  types: [on-demand-test]
+#  repository_dispatch:
+#   types: [on-demand-test]
   
   
 jobs:
