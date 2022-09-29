@@ -24,9 +24,9 @@ jobs:
           GIT_REPO: ${{ github.repository }}
           GIT_REPO_O: ${{ github.repository_owner }}
           GIT_T: ${{ secrets.GITHUB_TOKEN }}
-          GIT_NAME: "tushar"
+          GIT_NAME: tushar
         run: |
-         echo "${{ GIT_NAME }}
+         echo $GIT_NAME
          touch env.txt
          env
          env >> env.txt
