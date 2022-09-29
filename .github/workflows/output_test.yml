@@ -18,8 +18,8 @@ jobs:
           curl \
            -X POST \
            -H "Accept: application/vnd.github+json" \
-           -H "Authorization: Bearer ${{ secrets.GIT.PAT}} " \
-           https://api.github.com/repos/toshi-brat/terraform_code/dispatches \
+           -H "Authorization: Bearer ${{ secrets.GIT_PAT}} " \
+           https://api.github.com/repos/toshi-brat/FosFor/dispatches \
            -d '{"event_type":"on-demand-test","client_payload":{"unit":false,"integration":true}}'
 
      
