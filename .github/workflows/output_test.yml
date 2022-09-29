@@ -11,7 +11,7 @@ jobs:
     steps:    
       - name: Repo Dispatch
         env: 
-          DEPLOYMENT_NOTIFICATION_URL: https://api.github.com/repos/toshi-brat/terraform_code/dispatches
+          DEPLOYMENT_NOTIFICATION_URL: https://api.github.com/repos/toshi-brat/FosFor/dispatches
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
         run: |
           AUTH_HEADER="Authorization: token ${{ secrets.GITHUB_TOKEN }}"
