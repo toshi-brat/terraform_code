@@ -24,18 +24,19 @@ jobs:
           GIT_REPO: ${{ github.repository }}
           GIT_REPO_O: ${{ github.repository_owner }}
           GIT_T: ${{ secrets.GITHUB_TOKEN }}
+          GIT_NAME: "tushar"
         run: |
+         echo "${{ GIT_NAME }}
          touch env.txt
-         echo "$GITHUB.REPOSITORY" >> env.txt
          env
          env >> env.txt
          
 
-      - name: Upload Artifacts
-        uses: actions/upload-artifact@v2
-        with: 
-          name: env-details
-          path: env.txt
+#       - name: Upload Artifacts
+#         uses: actions/upload-artifact@v2
+#         with: 
+#           name: env-details
+#           path: env.txt
          
            
 #       - name: Repo Dispatch
