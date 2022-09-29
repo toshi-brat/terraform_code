@@ -14,12 +14,12 @@ jobs:
           DEPLOYMENT_NOTIFICATION_URL: https://api.github.com/repos/toshi-brat/terraform_code/dispatches
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
         run: |
-          AUTH_HEADER="Authorization: token ${{ secrets.GITHUB_TOKEN }}"
-          PAYLOAD='{ "event_type": "deploy_service"}'
-          curl --request POST "$DEPLOYMENT_NOTIFICATION_URL" --header "$AUTH_HEADER" --header "Content-Type: application/json" --data-raw "$PAYLOAD" -f -i
-      
-
-
+          curl \
+           -X POST \
+           -H "Accept: application/vnd.github+json" \
+           -H "Authorization: token ${{ GITHUB_TOKEN }} " \
+           https://api.github.com/repos/toshi-brat/terraform_code/dispatches \
+           -d '{"event_type":"on-demand-test","client_payload":{"unit":false,"integration":true}}'
 
      
         
