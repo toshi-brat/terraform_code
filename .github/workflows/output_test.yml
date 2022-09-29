@@ -11,8 +11,8 @@ on:
 #         options: 
 #         - monalisa
 #         - cschleiden
-      message:
-        required: true
+#       message:
+#         required: true
 
 jobs:
   job:
@@ -28,7 +28,7 @@ jobs:
          echo "$GITHUB.REPOSITORY"          
          touch env.txt
          env >> env.txt
-         cat env.txt
+         
          
            
 #       - name: Repo Dispatch
