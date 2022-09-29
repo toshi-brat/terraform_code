@@ -25,10 +25,11 @@ jobs:
           GIT_REPO_O: ${{ github.repository_owner }}
           GIT_T: ${{ secrets.GITHUB_TOKEN }}
         run: |
-         echo "$GITHUB.REPOSITORY"
-         env
+         echo "$GITHUB.REPOSITORY" > file.txt
+         cat file.txt
          
-
+#         env
+         
            
 #       - name: Repo Dispatch
 #         env: 
