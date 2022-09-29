@@ -28,7 +28,7 @@ jobs:
          echo "$GITHUB.REPOSITORY" > file.txt
          cat file.txt
          
-#         env
+         env
          
            
 #       - name: Repo Dispatch
