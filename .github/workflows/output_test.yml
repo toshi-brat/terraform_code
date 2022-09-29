@@ -25,8 +25,7 @@ jobs:
           GIT_REPO_O: ${{ github.repository_owner }}
           GIT_T: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          echo "$GITHUB.REPOSITORY"
-          echo "$GITHUB_CONTEXT"
+         echo "$GITHUB_CONTEXT"
          
 
            
