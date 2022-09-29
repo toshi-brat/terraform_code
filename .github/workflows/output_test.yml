@@ -18,18 +18,28 @@ jobs:
   job:
     runs-on: ubuntu-latest
     steps:    
-           
-      - name: Repo Dispatch
-        env: 
-          DEPLOYMENT_NOTIFICATION_URL: https://api.github.com/repos/toshi-brat/FosFor/dispatches
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+    
+      - name: Print
+        env:
+          GIT_REPO: ${{ github.repository }}
+          GIT_REPO_O: ${{ github.repository_owner }}
+          GIT_T: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          curl \
-           -X POST \
-           -H "Accept: application/vnd.github+json" \
-           -H "Authorization: Bearer ${{ secrets.GIT_PAT}} " \
-           https://api.github.com/repos/toshi-brat/FosFor/dispatches \
-           -d '{"event_type":"on-demand-test","client_payload":{"unit":false,"integration":true}}'
+          echo "GIT_REPO: $GH_REPO"
+          echo "GIT_REPO_O: $GH_REPO_O"
+          echo "GIT_T: $GH_T"
+           
+#       - name: Repo Dispatch
+#         env: 
+#           DEPLOYMENT_NOTIFICATION_URL: https://api.github.com/repos/toshi-brat/FosFor/dispatches
+#           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+#         run: |
+#           curl \
+#            -X POST \
+#            -H "Accept: application/vnd.github+json" \
+#            -H "Authorization: Bearer ${{ secrets.GIT_PAT}} " \
+#            https://api.github.com/repos/toshi-brat/FosFor/dispatches \
+#            -d '{"event_type":"on-demand-test","client_payload":{"unit":false,"integration":true}}'
 
      
         
