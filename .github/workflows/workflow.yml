@@ -34,7 +34,9 @@ jobs:
           
       - name: terraform apply
         if: github.ref == 'refs/heads/main'
-        run: terraform apply -auto-approve -input=false
+        run: |
+         terraform init
+         terraform apply -auto-approve -input=false
 
 
 #       - name: add tag
