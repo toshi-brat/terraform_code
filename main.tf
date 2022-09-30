@@ -103,20 +103,20 @@ module "sg2" {
   }
 }
 
-# module "ec2" {
-#   source = "./module/ec2"
+module "ec2" {
+  source = "./module/ec2"
 
-#   ami = "ami-0b43eb83cb7397b6f"
-#   #pub-snet = lookup(module.network.pub-snet-id, "s1", null).id
-#   sg = lookup(module.sg.output-sg-id, "web-server", null)
-#   pub-id = {
-#     ec2-01= {
-#       subnet_id = lookup(module.network.pub-snet-id, "s1", null).id
-#       }
-#   # ec2-02 = {
-#   #   subnet_id = lookup(module.network.pub-snet-id, "s2", null).id
-#     }
-#   }  
+  ami = "ami-0b43eb83cb7397b6f"
+  #pub-snet = lookup(module.network.pub-snet-id, "s1", null).id
+  sg = lookup(module.sg.output-sg-id, "web-server", null)
+  pub-id = {
+    ec2-01= {
+      subnet_id = lookup(module.network.pub-snet-id, "s1", null).id
+      }
+  # ec2-02 = {
+  #   subnet_id = lookup(module.network.pub-snet-id, "s2", null).id
+    }
+  }  
 
 
 module "lb" {
