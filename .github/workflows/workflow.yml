@@ -3,6 +3,7 @@ name: terraform execution
 on:
  pull_request:
  workflow_dispatch:
+ push:
 #  repository_dispatch:
 #   types: [on-demand-test]
   
@@ -32,7 +33,9 @@ jobs:
           aws-region: ap-south-1
           
       - name: terraform apply
-        uses: dflook/terraform-apply@v1
+        if: github.ref == 'refs/heads/main'
+        run: terraform apply -auto-approve -input=false
+
 
 #       - name: add tag
 #         uses: rickstaa/action-create-tag@v1
