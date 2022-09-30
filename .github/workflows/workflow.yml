@@ -29,6 +29,9 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ap-south-1
+          
+      - name: terraform apply
+        uses: dflook/terraform-apply@v1
 
 #       - name: add tag
 #         uses: rickstaa/action-create-tag@v1
