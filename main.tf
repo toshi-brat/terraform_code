@@ -4,6 +4,14 @@ provider "aws" {
 data "aws_availability_zones" "available" {
   state = "available"
 }
+terraform {
+  backend "s3" {
+    bucket = "my-tf-s3-backend"
+    key    = "prod/terraform.tfstate"
+    region = "ap-south-1"
+  }
+}
+
 
 module "network" {
   source   = "./module/network"
@@ -103,55 +111,55 @@ module "sg2" {
   }
 }
 
-module "ec2" {
-  source = "./module/ec2"
+# module "ec2" {
+#   source = "./module/ec2"
 
-  ami = "ami-0b43eb83cb7397b6f"
-  #pub-snet = lookup(module.network.pub-snet-id, "s1", null).id
-  sg = lookup(module.sg.output-sg-id, "web-server", null)
-  pub-id = {
-    ec2-01= {
-      subnet_id = lookup(module.network.pub-snet-id, "s1", null).id
-      }
-  # ec2-02 = {
-  #   subnet_id = lookup(module.network.pub-snet-id, "s2", null).id
-    }
-  }  
-
-
-module "lb" {
-  source = "./module/lb"
-  lb_sg  = lookup(module.sg.output-sg-id, "alb-sg", null)
-  snet = {
-    snet1 = {
-      snet-id = lookup(module.network.pub-snet-id, "s1", null).id
-    },
-    snet2 = {
-      snet-id = lookup(module.network.pub-snet-id, "s2", null).id
-    }
-  }
-  # pubsnet = [lookup(module.network.pub-snet-id, "s1", null).id , lookup(module.network.pub-snet-id, "s2", null).id]
-  vpc-id = module.network.vpc-id
-  #attach = module.ec2.ec2-id
-  pri-snet = [lookup(module.network.pri-snet-id, "ps1", null).id , lookup(module.network.pri-snet-id, "ps2", null).id]
-}
+#   ami = "ami-0b43eb83cb7397b6f"
+#   #pub-snet = lookup(module.network.pub-snet-id, "s1", null).id
+#   sg = lookup(module.sg.output-sg-id, "web-server", null)
+#   pub-id = {
+#     ec2-01= {
+#       subnet_id = lookup(module.network.pub-snet-id, "s1", null).id
+#       }
+#   # ec2-02 = {
+#   #   subnet_id = lookup(module.network.pub-snet-id, "s2", null).id
+#     }
+#   }  
 
 
-module "asg" {
-  source          = "./module/asg"
-  ami             = "ami-0b43eb83cb7397b6f"
-  instance-type   = "t2.micro"
-  #snet           = [lookup(module.network.pub-snet-id, "s1", null).id, lookup(module.network.pub-snet-id, "s2", null).id]
-  pri-snet        = [lookup(module.network.pri-snet-id, "ps1", null).id , lookup(module.network.pri-snet-id, "ps2", null).id]
-  frontend-tg-arn = module.lb.frontend-tg-arn
-  backend-tg-arn  = module.lb.backend-tg-arn
-  sg              = lookup(module.sg.output-sg-id, "web-server", null)
-  # host = module.rds.dbname
-  # username = module.rds.username
-  # password = module.rds.password
-  # dbname = module.rds.dbname
+# module "lb" {
+#   source = "./module/lb"
+#   lb_sg  = lookup(module.sg.output-sg-id, "alb-sg", null)
+#   snet = {
+#     snet1 = {
+#       snet-id = lookup(module.network.pub-snet-id, "s1", null).id
+#     },
+#     snet2 = {
+#       snet-id = lookup(module.network.pub-snet-id, "s2", null).id
+#     }
+#   }
+#   # pubsnet = [lookup(module.network.pub-snet-id, "s1", null).id , lookup(module.network.pub-snet-id, "s2", null).id]
+#   vpc-id = module.network.vpc-id
+#   #attach = module.ec2.ec2-id
+#   pri-snet = [lookup(module.network.pri-snet-id, "ps1", null).id , lookup(module.network.pri-snet-id, "ps2", null).id]
+# }
+
+
+# module "asg" {
+#   source          = "./module/asg"
+#   ami             = "ami-0b43eb83cb7397b6f"
+#   instance-type   = "t2.micro"
+#   #snet           = [lookup(module.network.pub-snet-id, "s1", null).id, lookup(module.network.pub-snet-id, "s2", null).id]
+#   pri-snet        = [lookup(module.network.pri-snet-id, "ps1", null).id , lookup(module.network.pri-snet-id, "ps2", null).id]
+#   frontend-tg-arn = module.lb.frontend-tg-arn
+#   backend-tg-arn  = module.lb.backend-tg-arn
+#   sg              = lookup(module.sg.output-sg-id, "web-server", null)
+#   # host = module.rds.dbname
+#   # username = module.rds.username
+#   # password = module.rds.password
+#   # dbname = module.rds.dbname
   
-}
+# }
 
 # module "rds" {
 # source = "./module/rds"
