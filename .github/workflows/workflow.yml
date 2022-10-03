@@ -22,8 +22,8 @@ jobs:
     steps:
       - uses: actions/checkout@v1
         name: Download codebase
-      - name: terraform plan
-        uses: dflook/terraform-plan@v1
+#       - name: terraform plan
+#         uses: dflook/terraform-plan@v1
 
       - name: configure AWS
         uses: aws-actions/configure-aws-credentials@v1
